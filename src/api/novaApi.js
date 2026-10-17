@@ -1,5 +1,7 @@
 const BACKEND_HOST = window.location.hostname || 'localhost';
-const BASE_URL = import.meta.env.VITE_API_URL || `http://${BACKEND_HOST}:8085/api`;
+let rawUrl = (import.meta.env.VITE_API_URL || `http://${BACKEND_HOST}:8085/api`).trim();
+if (rawUrl.endsWith('/')) rawUrl = rawUrl.slice(0, -1);
+const BASE_URL = rawUrl.endsWith('/api') ? rawUrl : `${rawUrl}/api`;
 
 async function request(path, options = {}) {
   const response = await fetch(`${BASE_URL}${path}`, {
